@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'  // Add this line for publishing the library
 
 ext {
     // Where you will see your artifact in Bintray's web interface
@@ -52,5 +53,22 @@ dependencies {
     compile 'com.android.support:appcompat-v7:27.0.2'
 }
 
-apply from: 'https://raw.githubusercontent.com/attwellBrian/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/attwellBrian/JCenter/master/bintrayv1.gradle'
+publishing {
+    publications {
+        release(MavenPublication) {
+            from components.release  // This assumes the 'release' component for an Android library
+
+            // Define library's groupId, artifactId, and version
+            groupId = 'icubeaccess'  // Replace with your GitHub username
+            artifactId = 'AndroidVideoCache'  // Replace with your library's name
+            version = '1.0.1'  // Use the version you want to publish
+        }
+    }
+
+    // Optional: Define where to publish
+    repositories {
+        maven {
+            url = uri("https://jitpack.io")  // Specify JitPack as the repository
+        }
+    }
+}
